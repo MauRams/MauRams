@@ -2,6 +2,8 @@ const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
 const request = require('request')
+const placesFetch = require('./utils/places_fetch')
+const geocode = require('./utils/geocode')
 // define the app instance
 const app = express()
 // set up config
@@ -22,8 +24,6 @@ app.use(express.static(publicDir))
 /****************/
 
 const now = new Date;
-var utc_timestamp = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
-    now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
 
 app.get('', (req, res) =>{
     res.render('index', {
