@@ -25,21 +25,40 @@ app.use(express.static(publicDir))
 
 const now = new Date;
 
-app.get('', (req, res) =>{
+app.get('', (req, res) => {
     res.render('index', {
         title: 'Get My Food',
         currentTime: now
     })
-    // placesFetch(latitude, longitude, (error, forecastData) => {
-    //     if (error) {
-    //         return res.send({ error })
-    //     }
-    //     res.send({
-    //         forecast: forecastData,
-    //         location,
-    //         address: req.query.address
-    //     })
-    // })
+
+    geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
+
+        if (error) {
+            return res.send({ error })
+        } else {
+            placesFetch(latitude, longitude, (error, address, name, opening_hours) => {
+                if (error) {
+                    return res.send({ error })
+                }
+                console.log(name);
+                console.log(address);
+                console.log(opening_hours);
+                console.log(location);
+                
+                
+                // res.send({
+                //     address: address,
+                //     name: name,
+                //     opening_hours: opening_hours,
+                //     location
+                // })
+            })
+
+        }
+
+
+    })
+
 })
 
 /****************/
