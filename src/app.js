@@ -30,6 +30,16 @@ app.get('', (req, res) =>{
         title: 'Get My Food',
         currentTime: now
     })
+    // placesFetch(latitude, longitude, (error, forecastData) => {
+    //     if (error) {
+    //         return res.send({ error })
+    //     }
+    //     res.send({
+    //         forecast: forecastData,
+    //         location,
+    //         address: req.query.address
+    //     })
+    // })
 })
 
 /****************/
