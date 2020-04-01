@@ -16,8 +16,7 @@ const geoCode = (address, callback) => {
             // using a callback function, send the lat long and location back to the application to use in placesFetch
             callback(undefined, {
                 latitude: body.features[0].center[1],
-                longitude: body.features[0].center[0],
-                location: body.features[0].place_name
+                longitude: body.features[0].center[0]
             })
         }
     })

@@ -15,28 +15,23 @@ const placesFetch = (latitude, longitude, callback) => {
             callback('Unable to find location', undefined)
         } else {
             // grab the next page token to display the results to users
-            // const npt = body.next_page_token;
-            
+            const npt = body.next_page_token;
             // get the full page of results
             const results = body.results;
             /// create empty array to store id's of each place
-            const idList = new Array()
+            const resObj = new Array()
             // loop through the page of results and add the list of id's to the array
             for (r in results) {
-
-                // idList.push(results[r.place_id])
-
-                callback(undefined, {
-                /*  Only the ID is needed here, to pass to placesHours
-                    placesHours will request the required data for the user */
-                    // pageToken: npt,
-                    // idList: idList
-                    placeID: results[r].place_id,
-                    // address: results[r].vicinity,
-                    // name: results[r].name,
-                    // open: results[r].opening_hours
-                })
-            }
+                const ids = results[r].place_id
+                // add the IDS to an array
+                resObj.push(ids)
+            }         
+            /*  Only the ID is needed here, to pass to placesHours
+                placesHours will request the required data for the user */
+            callback(undefined, {
+                placeIds: resObj,
+                npt,
+            })
 
 
         }

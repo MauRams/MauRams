@@ -4,8 +4,11 @@ const hbs = require('hbs')
 const request = require('request')
 const placesFetch = require('./utils/places_fetch')
 const geocode = require('./utils/geocode')
+const getPlaceHours = require('./utils/placesHours')
 // define the app instance
 const app = express()
+// add env port config or 3000
+const port = process.env.PORT || 3000
 // set up config
 const publicDir = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
@@ -34,25 +37,30 @@ app.get('', (req, res) => {
     /* Run geocode when a place name is provided in the query string
     this will return a set o co-ordinates to be used in the places API 
     set up in placesFetch.js */
-    geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
+    geocode(req.query.address, (error, { latitude, longitude } = {}) => {
         // if error is encountered pull from geocode and display to the user
         if (error) {
             return res.send({ error })
             // otherwise, pass the lat and long to placesFetch to get a list of food outlets open within a 2KM radius
         } else {
-            placesFetch(latitude, longitude, (error, addr) => {
+            placesFetch(latitude, longitude, (error, placesIds) => {
                 // if an error is encountered, display to the user
                 if (error) {
                     return res.send({ error })
                 } else {
-                    console.log(addr);
+                    getPlaceHours(placesIds, (error, placeData) => {
+                        if (error) {
+                            return res.send({ error })
+                        } else {
+                            console.log(placeData.placeIds);
 
-                    // res.send({
-                    //     address: address,
-                    //     name: name,
-                    //     opening_hours: opening_hours,
-                    //     location
-                    // })
+                            for (const p in pData) {
+                                console.log(p[0]);
+
+                            }
+
+                        }
+                    })
                 }
             })
 
@@ -66,7 +74,7 @@ app.get('', (req, res) => {
 /****************/
 /** Run Server **/
 /****************/
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('Server is up on port 3000.');
 
 })
